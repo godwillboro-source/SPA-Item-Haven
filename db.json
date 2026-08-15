@@ -1,0 +1,44 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Wireless Mechanical Keyboard",
+      "description": "A compact 75% mechanical keyboard with hot-swappable switches and a 4000mAh battery for weeks of wireless use.",
+      "price": 1099,
+      "stock": 24,
+      "image_url": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "id": 2,
+      "name": "Noise-Cancelling Headphones",
+      "description": "Over-ear headphones with adaptive noise cancellation and 30-hour battery life, tuned for long work sessions.",
+      "price": 3599,
+      "stock": 12,
+      "image_url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "id": 3,
+      "name": "Minimalist Desk Lamp",
+      "description": "A dimmable LED desk lamp with a matte aluminum body and USB-C charging port built into the base.",
+      "price": 2399,
+      "stock": 40,
+      "image_url": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "id": 4,
+      "name": "RGB Mouse",
+      "description": "A precision gaming mouse with customizable RGB lighting and ergonomic design for extended gaming sessions.",
+      "price": 499,
+      "stock": 8,
+      "image_url": "https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "name": "Flash drive",
+      "description": "A very portable 64 GB drive",
+      "price": 800,
+      "stock": 4,
+      "image_url": "https://images.unsplash.com/photo-1587145820098-23e484e69816?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "id": 6
+    }
+  ]
+}
