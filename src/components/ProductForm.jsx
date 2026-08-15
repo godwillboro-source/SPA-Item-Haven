@@ -1,133 +1,121 @@
-import { useId, useState } from 'react';
+import { useState } from 'react'
 
-const emptyProduct = {
-  name: '',
-  description: '',
-  price: '',
-  image_url: '',
-  stock: '',
-};
+const fallbackImage =
+  'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80'
 
-export default function ProductForm({
-  initialValues = {},
-  onSubmit,
-  submitLabel = 'Save Product',
-  isSubmitting = false,
-}) {
-  const [formData, setFormData] = useState({ ...emptyProduct, ...initialValues });
-  const [errors, setErrors] = useState({});
+export default function ProductForm({ initialProduct, onSubmit, submitLabel, busy = false }) {
+  const [form, setForm] = useState({
+    name: initialProduct?.name || '',
+    price: initialProduct?.price ?? '',
+    stock: initialProduct?.stock ?? '',
+    image_url: initialProduct?.image_url || '',
+    description: initialProduct?.description || '',
+  })
 
-  // useId keeps every label/input pair unique even if ProductForm is
-  // rendered more than once on the same page.
-  const idPrefix = useId();
+  const [formError, setFormError] = useState('')
 
   function handleChange(event) {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value } = event.target
+    setForm({ ...form, [name]: value })
   }
 
-  function validate(data) {
-    const nextErrors = {};
-    if (!data.name.trim()) nextErrors.name = 'Product name is required.';
-    if (!data.description.trim()) nextErrors.description = 'Description is required.';
-    if (data.price === '' || Number.isNaN(Number(data.price)) || Number(data.price) < 0) {
-      nextErrors.price = 'Enter a valid price.';
+  async function handleSubmit(event) {
+    event.preventDefault()
+
+    if (!form.name.trim() || !form.description.trim()) {
+      setFormError('Give the product a name and a description first.')
+      return
     }
-    if (data.stock !== '' && (Number.isNaN(Number(data.stock)) || Number(data.stock) < 0)) {
-      nextErrors.stock = 'Stock must be a non-negative number.';
+
+    const price = Number(form.price)
+    const stock = Number(form.stock)
+
+    if (Number.isNaN(price) || price < 0) {
+      setFormError('Price must be a valid non-negative number.')
+      return
     }
-    return nextErrors;
-  }
 
-  function handleSubmit(event) {
-    event.preventDefault();
+    if (Number.isNaN(stock) || stock < 0) {
+      setFormError('Stock must be a valid non-negative number.')
+      return
+    }
 
-    const nextErrors = validate(formData);
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) return;
+    setFormError('')
 
-    onSubmit({
-      ...formData,
-      price: Number(formData.price),
-      stock: formData.stock === '' ? 0 : Number(formData.stock),
-    });
+    await onSubmit({
+      name: form.name.trim(),
+      description: form.description.trim(),
+      price,
+      stock,
+      image_url: form.image_url.trim() || fallbackImage,
+    })
   }
 
   return (
-    <form className="product-form" onSubmit={handleSubmit} noValidate>
-      <div className="form-field">
-        <label htmlFor={`${idPrefix}-name`}>Product Name</label>
+    <form className="product-form" onSubmit={handleSubmit}>
+      <label>
+        <span>Product name</span>
         <input
-          id={`${idPrefix}-name`}
           name="name"
-          type="text"
-          value={formData.name}
+          value={form.name}
           onChange={handleChange}
-          disabled={isSubmitting}
+          placeholder="e.g. Wireless Keyboard"
         />
-        {errors.name && <p className="field-error">{errors.name}</p>}
-      </div>
-
-      <div className="form-field">
-        <label htmlFor={`${idPrefix}-description`}>Description</label>
-        <textarea
-          id={`${idPrefix}-description`}
-          name="description"
-          rows={4}
-          value={formData.description}
-          onChange={handleChange}
-          disabled={isSubmitting}
-        />
-        {errors.description && <p className="field-error">{errors.description}</p>}
-      </div>
+      </label>
 
       <div className="form-row">
-        <div className="form-field">
-          <label htmlFor={`${idPrefix}-price`}>Price</label>
+        <label>
+          <span>Price</span>
           <input
-            id={`${idPrefix}-price`}
             name="price"
             type="number"
-            min="0"
             step="0.01"
-            value={formData.price}
+            min="0"
+            value={form.price}
             onChange={handleChange}
-            disabled={isSubmitting}
+            placeholder="0.00"
           />
-          {errors.price && <p className="field-error">{errors.price}</p>}
-        </div>
-
-        <div className="form-field">
-          <label htmlFor={`${idPrefix}-stock`}>Stock</label>
+        </label>
+        <label>
+          <span>Stock quantity</span>
           <input
-            id={`${idPrefix}-stock`}
             name="stock"
             type="number"
-            min="0"
             step="1"
-            value={formData.stock}
+            min="0"
+            value={form.stock}
             onChange={handleChange}
-            disabled={isSubmitting}
+            placeholder="0"
           />
-          {errors.stock && <p className="field-error">{errors.stock}</p>}
-        </div>
+        </label>
       </div>
 
-      <div className="form-field">
-        <label htmlFor={`${idPrefix}-image_url`}>Image URL</label>
+      <label>
+        <span>Image URL</span>
         <input
-          id={`${idPrefix}-image_url`}
           name="image_url"
-          type="text"
-          value={formData.image_url}
+          value={form.image_url}
           onChange={handleChange}
-          disabled={isSubmitting}
+          placeholder="https://..."
         />
-      </div>
+      </label>
 
-      <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Saving...' : submitLabel}
+      <label>
+        <span>Description</span>
+        <textarea
+          name="description"
+          rows="6"
+          value={form.description}
+          onChange={handleChange}
+          placeholder="What makes this product worth buying?"
+        />
+      </label>
+
+      {formError && <p className="form-error">{formError}</p>}
+
+      <button className="button button-primary" disabled={busy}>
+        {busy ? 'Saving…' : submitLabel}
       </button>
     </form>
-  );
+  )
 }

@@ -1,35 +1,40 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ProductForm from '../components/ProductForm.jsx';
-import { createProduct } from '../api/products.js';
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import ProductForm from '../components/ProductForm.jsx'
+import { createProduct } from '../api/products.js'
 
-export default function NewProduct() {
-  const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
+export default function NewProduct({ products, setProducts }) {
+  const navigate = useNavigate()
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
 
-  async function handleCreate(productData) {
-    setIsSubmitting(true);
-    setSubmitError(null);
-
+  async function handleSubmit(product) {
+    setBusy(true)
+    setError('')
     try {
-      const newProduct = await createProduct(productData);
-      navigate(`/products/${newProduct.id}`);
-    } catch (error) {
-      setSubmitError('Could not save the product. Please try again.');
-      setIsSubmitting(false);
+      const created = await createProduct(product)
+      setProducts([...products, created])
+      navigate(`/products/${created.id}`)
+    } catch {
+      setError('Could not create the product. Check that json-server is running.')
+      setBusy(false)
     }
   }
 
   return (
-    <section className="new-product-page">
-      <h1>Add a New Product</h1>
-      {submitError && <p className="field-error">{submitError}</p>}
-      <ProductForm
-        onSubmit={handleCreate}
-        submitLabel="Add Product"
-        isSubmitting={isSubmitting}
-      />
+    <section className="form-page-card">
+      <div className="form-page-copy">
+        <span className="eyebrow">New listing</span>
+        <h1>Add a new product</h1>
+        <p>Fill in the details in the provided spaces.</p>
+        <Link to="/" className="text-link">
+          ← Back to home
+        </Link>
+      </div>
+      <div className="form-card">
+        <ProductForm onSubmit={handleSubmit} submitLabel="Create product" busy={busy} />
+        {error && <p className="form-error">{error}</p>}
+      </div>
     </section>
-  );
+  )
 }
