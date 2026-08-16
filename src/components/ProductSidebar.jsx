@@ -12,10 +12,10 @@ export default function ProductSidebar({ products, loading }) {
   )
 
   return (
-    //section for the sidebar with a search bar, add product button, and a list of products
+    
     <aside className="sidebar">
 
-        //section for the brand logo and name, which links to the home page
+
       <NavLink className="brand" to="/">
         <span className="brand-mark">🛒</span>
         <span>
@@ -24,7 +24,7 @@ export default function ProductSidebar({ products, loading }) {
         </span>
       </NavLink>
 
-      // section for search box that allows users to filter products by name
+
      <label className="search-box">
         <span aria-hidden="true">⌕</span>
         <input
@@ -34,17 +34,17 @@ export default function ProductSidebar({ products, loading }) {
           aria-label="Search products"
         />
       </label>
-     //navigation button to add a new product
+     
       <NavLink to="/products/new" className="button button-primary button-wide">
         <span>＋</span> Add product
       </NavLink>
-     //section showing the total number of products 
+     
       <div className="menu-heading">
         <span>Catalog</span>
         <span className="count-pill">{products.length}</span>
       </div>
      
-     //sidebar navigation list
+     
       <nav className="product-nav" aria-label="Product menu">
         {loading && <div className="nav-skeleton">Loading products…</div>}
         {!loading && filtered.length === 0 && (
