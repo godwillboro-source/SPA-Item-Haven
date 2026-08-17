@@ -1,4 +1,4 @@
-import { test, expect } from 'vitest'
+import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import PriceEditor from '../components/PriceEditor.jsx'
 
