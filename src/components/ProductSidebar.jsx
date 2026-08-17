@@ -1,21 +1,16 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 export default function ProductSidebar({ products, loading }) {
- 
-    const [search, setSearch] = useState('')
+  const [search, setSearch] = useState('')
 
-
-    
+  // filter products by name (converts to lowercase)
   const filtered = products.filter((product) =>
     product.name.toLowerCase().includes(search.trim().toLowerCase()),
   )
 
   return (
-    
     <aside className="sidebar">
-
-        
       <NavLink className="brand" to="/">
         <span className="brand-mark">🛒</span>
         <span>
@@ -24,8 +19,7 @@ export default function ProductSidebar({ products, loading }) {
         </span>
       </NavLink>
 
-      
-     <label className="search-box">
+      <label className="search-box">
         <span aria-hidden="true">⌕</span>
         <input
           value={search}
@@ -34,16 +28,13 @@ export default function ProductSidebar({ products, loading }) {
           aria-label="Search products"
         />
       </label>
-     
       <NavLink to="/products/new" className="button button-primary button-wide">
         <span>＋</span> Add product
       </NavLink>
-     
       <div className="menu-heading">
         <span>Catalog</span>
         <span className="count-pill">{products.length}</span>
       </div>
-     
      
       <nav className="product-nav" aria-label="Product menu">
         {loading && <div className="nav-skeleton">Loading products…</div>}
