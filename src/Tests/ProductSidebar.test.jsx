@@ -1,4 +1,4 @@
-import { test, expect } from 'vitest'
+import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import ProductSidebar from '../components/ProductSidebar.jsx'
@@ -9,7 +9,11 @@ const mockProducts = [
 ]
 
 test('filters products when searching', () => {
-  render(<BrowserRouter><ProductSidebar products={mockProducts} loading={false} /></BrowserRouter>)
+  render(
+    <BrowserRouter>
+      <ProductSidebar products={mockProducts} loading={false} />
+    </BrowserRouter>
+  )
 
   const input = screen.getByPlaceholderText('Search products...')
   fireEvent.change(input, { target: { value: 'Mouse' } })

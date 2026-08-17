@@ -1,4 +1,4 @@
-import { test, expect } from 'vitest'
+import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import LandingPage from '../pages/LandingPage.jsx'
@@ -8,7 +8,11 @@ const mockProducts = [
 ]
 
 test('shows the number of products listed', () => {
-  render(<BrowserRouter><LandingPage products={mockProducts} /></BrowserRouter>)
+  render(
+    <BrowserRouter>
+      <LandingPage products={mockProducts} />
+    </BrowserRouter>
+  )
   expect(screen.getByText('1')).toBeInTheDocument()
   expect(screen.getByText('products listed')).toBeInTheDocument()
 })
