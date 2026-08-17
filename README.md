@@ -16,6 +16,7 @@ A React admin portal for managing the Item Haven catalog. Add, view, edit, searc
 - React
 - React Router (client-side routing)
 - json-server (simulated backend)
+- Vitest + React Testing Library (tests)
 
 ## Getting Started
 
@@ -35,12 +36,28 @@ This runs the fake API (port 3000) and the app (port 5173) together. Open http:/
 npm run server   # To activate the server
 npm run dev      # To activate the link to the page
 
+## Testing
+
+There are test files for each component/feature, covering things like the 404 page, the landing page product count, sidebar search filtering, product form validation, and the price editor.
+
+To run them:
+
+npm test
+
+src/tests/
+├── NotFound.test.jsx
+├── LandingPage.test.jsx
+├── ProductSidebar.test.jsx
+├── ProductForm.test.jsx
+└── PriceEditor.test.jsx
+
 ## Project Structure
 
 src/
 ├── api/            API calls to the fake backend
 ├── components/     Reusable pieces (form, sidebar, price editor, etc.)
 ├── pages/          Route-level pages (landing, product detail, edit, new)
+├── tests/          Test files
 ├── App.jsx         Routes and top-level state
 └── main.jsx        Entry point
 db.json             Fake database
