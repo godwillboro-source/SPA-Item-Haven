@@ -28,13 +28,16 @@ export default function ProductSidebar({ products, loading }) {
           aria-label="Search products"
         />
       </label>
+     
       <NavLink to="/products/new" className="button button-primary button-wide">
         <span>＋</span> Add product
       </NavLink>
+     
       <div className="menu-heading">
         <span>Catalog</span>
         <span className="count-pill">{products.length}</span>
       </div>
+     
      
       <nav className="product-nav" aria-label="Product menu">
         {loading && <div className="nav-skeleton">Loading products…</div>}
